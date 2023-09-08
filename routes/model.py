@@ -4,33 +4,16 @@ from keras import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input, ReLU
 from keras.optimizers import Adam
 import keras.backend as K
+from PIL import Image
+from keras.preprocessing.image import ImageDataGenerator
 
-SCALE = 0.8
-HEIGHT = round(560 * SCALE)
-WIDTH = round(950 * SCALE)
+HEIGHT = 200
+WIDTH = 200
 N_CATEGORIES = 39
 
-SCHEDULE = tf.keras.optimizers.schedules.ExponentialDecay(
-    initial_learning_rate=0.002,
-    decay_steps=10000,
-    decay_rate=0.90)
-
-OPTIMIZER = Adam(learning_rate=SCHEDULE)
-
-def f1_score(y_true, y_pred):
-    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
-    actual_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
-    
-    precision = true_positives / (predicted_positives + K.epsilon())
-    recall = true_positives / (actual_positives + K.epsilon())
-    
-    f1_val = 2 * (precision * recall) / (precision + recall + K.epsilon())
-    return f1_val
-
 def load_model():
-        
-    with tf.device("/GPU:0"):
+    
+    try:
         # Load the original model
         original_model = tf.keras.models.load_model('model.h5')
 
@@ -38,40 +21,89 @@ def load_model():
 
         del original_model
 
-        model = Sequential()
+    except: pass
 
-        model.add(Input(shape=(HEIGHT, WIDTH, 1)))
+    model = Sequential()
 
-        model.add(Conv2D(filters=16, kernel_size=7, padding = 'same', kernel_initializer = 'he_normal'))
-        model.add(ReLU())
-        model.add(MaxPooling2D(pool_size=2))
+    model.add(Input(shape=(HEIGHT, WIDTH, 1)))
 
-        model.add(Conv2D(filters=32, kernel_size=5, padding = 'same', kernel_initializer = 'he_normal'))
-        model.add(ReLU())
-        model.add(MaxPooling2D(pool_size=2))
+    # First Conv Block
+    model.add(Conv2D(filters=32, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    # model.add(BatchNormalization())
+    model.add(tf.keras.layers.ReLU())
+    model.add(MaxPooling2D(pool_size=2))
 
-        model.add(Conv2D(filters=64, kernel_size=3, padding = 'same', kernel_initializer = 'he_normal'))
-        model.add(ReLU())
-        model.add(MaxPooling2D(pool_size=2))
+    # Second Conv Block
+    model.add(Conv2D(filters=64, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    # model.add(BatchNormalization())
+    model.add(tf.keras.layers.ReLU())
+    model.add(MaxPooling2D(pool_size=2))
 
-        model.add(Flatten())
+    # Third Conv Block
+    model.add(Conv2D(filters=128, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    # model.add(BatchNormalization())
+    model.add(tf.keras.layers.ReLU())
+    model.add(MaxPooling2D(pool_size=2))
 
-        for neurons in [128]:
-            model.add(Dense(neurons, activation='relu', kernel_initializer='he_normal'))
-            model.add(Dropout(0.15))
+    # Fourth Conv Block
+    model.add(Conv2D(filters=256, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    # model.add(BatchNormalization())
+    model.add(tf.keras.layers.ReLU())
+    model.add(MaxPooling2D(pool_size=2))
 
-        # Output layer
-        model.add(Dense(N_CATEGORIES, activation='softmax', kernel_initializer='he_normal'))
+    # Flatten and Fully Connected Layers
+    model.add(Flatten())
+    model.add(Dense(512, activation='relu', kernel_initializer='he_normal'))
+    model.add(Dropout(0.15))
+    model.add(Dense(256, activation='relu', kernel_initializer='he_normal'))
+    model.add(Dense(N_CATEGORIES, activation='softmax', kernel_initializer='he_normal'))
 
-        # Load the saved weights into the new model
-        model.load_weights('model_weights.h5')
+    lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+                initial_learning_rate=0.001,
+                decay_steps=10000,
+                decay_rate=0.9)
+    opt = Adam(learning_rate=lr_schedule)
 
-        model.compile(optimizer = OPTIMIZER, loss = 'categorical_crossentropy')
+    model.compile(optimizer=opt,
+                loss='categorical_crossentropy',
+                metrics=['accuracy'])
+    
+    model.load_weights('model_weights.h5')
 
-        return model
+    return model
 
 def modelRoute():
     
     model = load_model()
 
-    st.write(model.summary())
+    uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
+
+    if uploaded_image is not None:
+        # Read the uploaded image using PIL
+        image = Image.open(uploaded_image)
+        st.image(image, caption="Uploaded Image", use_column_width=True)
+
+        # Rescale the image to 200x200 pixels
+        image = image.resize((200, 200))
+
+        # Convert the PIL image to grayscale (single channel)
+        image = image.convert('L')
+
+        # Convert the grayscale image to a NumPy array
+        image_array = tf.keras.preprocessing.image.img_to_array(image)
+
+        # Create an ImageDataGenerator for normalization
+        datagen = ImageDataGenerator(rescale=1.0/255.0)
+
+        # Normalize the image
+        normalized_image = datagen.standardize(image_array.reshape(1, 200, 200, 1))
+
+        # Make a prediction using your pre-trained model
+        prediction = model.predict(normalized_image)
+
+        # Display the prediction
+        st.write(f"Predicted Class: {prediction.argmax()}")
+
+
+
+    st.write(model.count_params())
