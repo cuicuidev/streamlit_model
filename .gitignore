@@ -1,2 +1,5 @@
 __pycache__/
 /.env/
+
+*.h5
+!model_weights.h5
