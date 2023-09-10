@@ -6,7 +6,7 @@ def edaRoute():
     header()
 
 def header():
-    st.title("Análisis de datos exploratorio/descriptivo")
+    st.title("Datos")
 
     st.write("Dado que estamos trabando con imágenes, en esta sección solamente podemos mostrar la distribución de los datos para entrenamiento, \
              validación y test, así como la distribución de las diferentes categorías a predecir.")

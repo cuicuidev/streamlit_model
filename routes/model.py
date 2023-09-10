@@ -7,6 +7,8 @@ import keras.backend as K
 from PIL import Image
 from keras.preprocessing.image import ImageDataGenerator
 
+from labels import LABELS
+
 HEIGHT = 200
 WIDTH = 200
 N_CATEGORIES = 39
@@ -73,6 +75,16 @@ def load_model():
     return model
 
 def modelRoute():
+
+    st.title('Modelo')
+    
+    st.write('Para ver el modelo en acción, suba una fotografía de un coche. Tenga en cuenta que el modelo está diseñado para categorizar \
+             coches según su fabricante, por lo que si recibe una imágen que no es de un vehículo, intentará calificarla igualmente como si fuese uno. \
+             Además, algunos fabricantes de vehículos no formaron parte del dataset, por lo que el modelo no los conoce y es incapaz de calificar \
+             ninguna imágen con esa etiqueta. Estos son los fabricantes que puede clasificar:')
+    
+    with st.expander('Ver fabricantes'):
+        st.write(list(LABELS.values()))
     
     model = load_model()
 
@@ -102,8 +114,4 @@ def modelRoute():
         prediction = model.predict(normalized_image)
 
         # Display the prediction
-        st.write(f"Predicted Class: {prediction.argmax()}")
-
-
-
-    st.write(model.count_params())
+        st.write(f"### El fabricante del coche es _{LABELS[prediction.argmax()]}_.")
