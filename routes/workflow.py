@@ -32,7 +32,7 @@ def get_acc_chart():
     return fig
 
 def workflowRoute():
-    st.title('Resultados')
+    st.title(':straight_ruler: Resultados')
 
     st.write('Tras la evaluación del modelo utilizando el dataset de test, hemos obtenido una métrica en precisión de 0.33. Esto quiere decir que \
              el modelo clasifica correctamente la imágen un tercio de las ocasiones.')
@@ -40,7 +40,7 @@ def workflowRoute():
     with st.expander('Matriz de confusión'):
         st.plotly_chart(get_confusion_matrix(), use_container_width=True, config={'displayModeBar': False})
 
-    st.write('### Evolución del entrenamiento')
+    st.write('### Evolución del entrenamiento :chart_with_upwards_trend:')
     st.write('Se puede ver en la siguiente gráfica como han ido evolucionando las funciones de pérdida en entrenamiento y validación. \
              Durante las primeras épocas, la pérdida en validación estaba bajando ligeramente hasta llegar a lo que se ve que es un \
              mínimo alrededor de las 120 épocas. A partir de ahí, la pérdida no ha parado de subir en ningún momento, llegando a sobrepasar el valor \
@@ -61,7 +61,7 @@ def workflowRoute():
              obtenidos en iteraciones previas. El modelo aquí expuesto es el mejor de entre 6 modelos diferentes que hemos entrenado intentando introducir \
              una mejora en cada versión sucesiva. Finalmente, se validaron las métricas con un tercer dataset apartado especialmente para este propósito.')
     
-    st.write('### Consideraciones')
+    st.write('### Consideraciones :thinking_face:')
 
     st.write('Creemos que el tamaño del dataset era bastante reducido para enseñarle a una red neural a discriminar entre 39 diferentes categorías. \
              Además, es difícil en muchas ocasiones señalar unos atributos diferenciativos entre vehículos que tengan que ver a su vez con el fabricante. \

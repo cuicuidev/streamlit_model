@@ -15,15 +15,15 @@ N_CATEGORIES = 39
 
 def load_model():
     
-    try:
-        # Load the original model
-        original_model = tf.keras.models.load_model('model.h5')
+    # try:
+    #     # Load the original model
+    #     original_model = tf.keras.models.load_model('model.h5')
 
-        original_model.save_weights('model_weights.h5')
+    #     original_model.save_weights('model_weights.h5')
 
-        del original_model
+    #     del original_model
 
-    except: pass
+    # except: pass
 
     model = Sequential()
 
@@ -76,7 +76,7 @@ def load_model():
 
 def modelRoute():
 
-    st.title('Modelo')
+    st.title(':eye: Modelo')
     
     st.write('Para ver el modelo en acción, suba una fotografía de un coche. Tenga en cuenta que el modelo está diseñado para categorizar \
              coches según su fabricante, por lo que si recibe una imágen que no es de un vehículo, intentará calificarla igualmente como si fuese uno. \

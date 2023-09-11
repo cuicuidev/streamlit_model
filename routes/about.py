@@ -6,7 +6,7 @@ def aboutRoute():
     contactUs()
 
 def about():
-    st.title('Acerca de :mag:')
+    st.title(':mag: Acerca del proyecto')
     st.write('Esta aplicación web forma parte del último proyecto del bootcamp de Data Science de [Hackaboss](https://www.hackaboss.com/). \
              Somos Jacobo y Dmitry, dos muchachos muy apasionados por la ciencia de datos y la tecnología de la información. \
              Juntos hemos entrenado una red neural que permite clasificar turismos por su marca de fabricante. Asimismo, hemos creado esta aplicación web como medio \
@@ -24,12 +24,12 @@ def contactUs():
     dmi.write('_Data Scientist, Software Developer_')
     dmi.write('Email :e-mail:: **dmitryryzhenkov@cuicui.dev**')
     dmi.write('LinkedIn :page_facing_up:: [**cuicuidev**](https://www.linkedin.com/in/cuicuidev/)')
-    dmi.write('GitHub :cat::computer:: [**cuicuidev**](https://github.com/cuicuidev)')
-    dmi.write('Página web :newspaper:: [**cuicui.dev**](https://cuicui.dev)')
+    dmi.write('GitHub :cat:: [**cuicuidev**](https://github.com/cuicuidev)')
+    dmi.write('Página web :computer:: [**cuicui.dev**](https://cuicui.dev)')
 
     
     jac.write('#### Jacobo Brandariz Morano')
     jac.write('_Data Scientist_')
     jac.write('Email :e-mail:: **jacobobm.dsp@gmail.com**')
     jac.write('LinkedIn :page_facing_up:: [**JacoboBM**](https://www.linkedin.com/in/jacobo-brandariz-morano)')
-    jac.write('GitHub :cat::computer:: [**JacoboBM**](https://github.com/JacoboBM)')
+    jac.write('GitHub :cat:: [**JacoboBM**](https://github.com/JacoboBM)')

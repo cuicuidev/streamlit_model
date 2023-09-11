@@ -6,31 +6,35 @@ def edaRoute():
     header()
 
 def header():
-    st.title("Datos")
+    st.title(":chart_with_downwards_trend: Datos")
 
-    st.write("Dado que estamos trabando con imágenes, en esta sección solamente podemos mostrar la distribución de los datos para entrenamiento, \
+    st.write("Al trabajar con imágenes, en esta sección solamente podemos mostrar la distribución de los datos para entrenamiento, \
              validación y test, así como la distribución de las diferentes categorías a predecir.")
     
     st.write("---")
 
-    st.write("### Separación del dataset")
+    st.write("### Distribución :bar_chart:")
 
-    st.write("El dataset en su forma original venía con las imágenes ya distribuidas por las carpetas 'train', 'test' y 'val', \
-             por lo que no hizo falta separarlos manualmente. Según el creador del dataset, este mismo se ha encargado de \
-             distribuir las imágenes de manera estratificada. En la figura de la derecha pueden ver la distribución de los datos \
-             en entrenamiento, validación y test.")
+    col1, col2 = st.columns((2,5))
+
+    col1.write(" ")
+    col1.write(" ")
+    col1.write(" ")
+    col1.write(" ")
+    col1.write(" ")
+
+    col1.write("El dataset en su forma original venía con las imágenes ya distribuidas por las carpetas 'train', 'test' y 'val', \
+             por lo que no hizo falta separarlas manualmente. Según el creador del dataset, este mismo se ha encargado de \
+             distribuir las imágenes de manera estratificada. Se puede comrpobar más adelante en el gráfico de la distribución que esto es cierto.")
     
-    st.write("### Ditribución de categorías")
-    
-    st.write("En total hay 39 marcas de coches que podemos predecir, y no todas son igual de frecuentes. Aun así, la distribución de las \
-             categorías no está demasiado desbalanceada. En la figura a la izquierda pueden apreciar la frecuencia con la que aparece cada marca en el dataset. \
-             Exceptuando las 2 categorías menos frecuentes, la frecuencia del resto de marcas de coches es bastante similar.")
+    col1.write("En total hay 39 marcas de coches que podemos predecir, y no todas son igual de frecuentes. Aun así, la distribución de las \
+             categorías no está demasiado desbalanceada y esto se puede ver más abajo.")
 
         
-    fig = plot_category_distribution(sort_by='Total')  # You can replace 'Total' with 'train', 'test', or 'val'
-    st.plotly_chart(fig, use_container_width = True, config={'displayModeBar': False})
+    fig = plot_category_distribution(sort_by='Total')
+    col2.plotly_chart(fig, use_container_width = True, config={'displayModeBar': False})
     
-    st.write("### Conclusiones")
+    st.write("### Conclusiones :bulb:")
     
     st.write("La distribución de los datos por entrenamiento, validación y test sigue unas proporciones muy estandar y acorda a las buenas \
              prácticas dentro de aprendizaje automático, por lo que creemos que debemos dejarlo como está. Asimismo, también hemos decidido continuar con el diseño de \
