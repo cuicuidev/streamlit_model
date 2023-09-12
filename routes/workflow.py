@@ -32,15 +32,24 @@ def get_acc_chart():
     return fig
 
 def workflowRoute():
-    st.title(':straight_ruler: Resultados')
+    st.title(':heavy_check_mark: Resultados y flujo de trabajo')
+    st.write('---')
+
+    st.write('### Métricas :straight_ruler:')
 
     st.write('Tras la evaluación del modelo utilizando el dataset de test, hemos obtenido una métrica en precisión de 0.33. Esto quiere decir que \
              el modelo clasifica correctamente la imágen un tercio de las ocasiones.')
     
-    with st.expander('Matriz de confusión'):
-        st.plotly_chart(get_confusion_matrix(), use_container_width=True, config={'displayModeBar': False})
+    st.plotly_chart(get_confusion_matrix(), use_container_width=True, config={'displayModeBar': False})
+    
+    st.write('### Flujo de trabajo :gear:')
+    st.write('')
+
+    st.image('assets/workflow.png')
+
 
     st.write('### Evolución del entrenamiento :chart_with_upwards_trend:')
+
     st.write('Se puede ver en la siguiente gráfica como han ido evolucionando las funciones de pérdida en entrenamiento y validación. \
              Durante las primeras épocas, la pérdida en validación estaba bajando ligeramente hasta llegar a lo que se ve que es un \
              mínimo alrededor de las 120 épocas. A partir de ahí, la pérdida no ha parado de subir en ningún momento, llegando a sobrepasar el valor \

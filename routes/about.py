@@ -25,7 +25,7 @@ def contactUs():
     dmi.write('Email :e-mail:: **dmitryryzhenkov@cuicui.dev**')
     dmi.write('LinkedIn :page_facing_up:: [**cuicuidev**](https://www.linkedin.com/in/cuicuidev/)')
     dmi.write('GitHub :cat:: [**cuicuidev**](https://github.com/cuicuidev)')
-    dmi.write('Página web :computer:: [**cuicui.dev**](https://cuicui.dev)')
+    dmi.write('Página web :globe_with_meridians:: [**cuicui.dev**](https://cuicui.dev)')
 
     
     jac.write('#### Jacobo Brandariz Morano')

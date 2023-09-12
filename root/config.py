@@ -1,4 +1,6 @@
-PAGE_CONFIG = {"page_title"             : "Proyecto 3 Hackaboss",
+PAGE_CONFIG = {"page_title"             : "Predicción de marcas de coche",
                 "page_icon"             : ":car:",
-                # "layout"                : "wide",
-                "initial_sidebar_state" : "expanded"}
+                "layout"                : "centered",
+                "initial_sidebar_state" : "expanded",
+                
+                }
