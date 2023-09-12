@@ -10,8 +10,8 @@ from keras.preprocessing.image import ImageDataGenerator
 
 from labels import LABELS
 
-HEIGHT = 512
-WIDTH = 512
+HEIGHT = 200
+WIDTH = 200
 N_CATEGORIES = 39
 
 def modelRoute():
@@ -35,8 +35,10 @@ def modelRoute():
         image = Image.open(uploaded_image)
 
         rescaled_image = rescale_img(image)
+        # Convert the PIL image to grayscale (single channel)
+        rescaled_image = rescaled_image.convert('L')
         
-        first, second, third = get_feature_maps(model, rescaled_image)
+        first, second, third, fourth = get_feature_maps(model, rescaled_image)
 
         with st.expander('Visión del modelo'):
             st.write('## Imagen original')
@@ -55,9 +57,8 @@ def modelRoute():
                 st.write(f'### Tercer bloque de convolución')
                 st.image(next(third), caption="Feature Map", use_column_width=True)
 
-
-        # Convert the PIL image to grayscale (single channel)
-        # image = image.convert('L')
+                st.write(f'### Cuarto bloque de convolución')
+                st.image(next(fourth), caption="Feature Map", use_column_width=True)
 
         # Convert the grayscale image to a NumPy array
         image_array = tf.keras.preprocessing.image.img_to_array(rescaled_image)
@@ -66,7 +67,7 @@ def modelRoute():
         datagen = ImageDataGenerator(rescale=1.0/255.0)
 
         # Normalize the image
-        normalized_image = datagen.standardize(image_array.reshape(1, HEIGHT, WIDTH, 3))
+        normalized_image = datagen.standardize(image_array.reshape(1, HEIGHT, WIDTH, 1))
 
         # Make a prediction
         prediction = model.predict(normalized_image)
@@ -81,45 +82,49 @@ def modelRoute():
 
 def load_model():
     
-    try:
-        # Load the original model
-        original_model = tf.keras.models.load_model('model.h5')
+    # try:
+    #     # Load the original model
+    #     original_model = tf.keras.models.load_model('model.h5')
 
-        original_model.save_weights('model_weights.h5')
+    #     original_model.save_weights('model_weights.h5')
 
-        del original_model
+    #     del original_model
 
-    except: pass
+    # except: pass
 
     model = Sequential()
 
-    model.add(Input(shape=(HEIGHT, WIDTH, 3)))
+    model.add(Input(shape=(HEIGHT, WIDTH, 1)))
 
     # First Conv Block
-    model.add(Conv2D(filters=16, kernel_size=7, padding='same', kernel_initializer='he_normal'))
+    model.add(Conv2D(filters=32, kernel_size=3, padding='same', kernel_initializer='he_normal'))
     # model.add(BatchNormalization())
     model.add(tf.keras.layers.ReLU())
     model.add(MaxPooling2D(pool_size=2))
 
     # Second Conv Block
-    model.add(Conv2D(filters=32, kernel_size=5, padding='same', kernel_initializer='he_normal'))
+    model.add(Conv2D(filters=64, kernel_size=3, padding='same', kernel_initializer='he_normal'))
     # model.add(BatchNormalization())
     model.add(tf.keras.layers.ReLU())
     model.add(MaxPooling2D(pool_size=2))
 
     # Third Conv Block
-    model.add(Conv2D(filters=64, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    model.add(Conv2D(filters=128, kernel_size=3, padding='same', kernel_initializer='he_normal'))
+    # model.add(BatchNormalization())
+    model.add(tf.keras.layers.ReLU())
+    model.add(MaxPooling2D(pool_size=2))
+
+    # Fourth Conv Block
+    model.add(Conv2D(filters=256, kernel_size=3, padding='same', kernel_initializer='he_normal'))
     # model.add(BatchNormalization())
     model.add(tf.keras.layers.ReLU())
     model.add(MaxPooling2D(pool_size=2))
 
     # Flatten and Fully Connected Layers
     model.add(Flatten())
+    model.add(Dense(512, activation='relu', kernel_initializer='he_normal'))
+    model.add(Dropout(0.15))
     model.add(Dense(256, activation='relu', kernel_initializer='he_normal'))
-    model.add(Dropout(0.15))
-    model.add(Dense(128, activation='relu', kernel_initializer='he_normal'))
-    model.add(Dropout(0.15))
-    model.add(Dense(64, activation='relu', kernel_initializer='he_normal'))
     model.add(Dense(N_CATEGORIES, activation='softmax', kernel_initializer='he_normal'))
 
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(

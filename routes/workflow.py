@@ -5,9 +5,11 @@ import labels
 
 def get_confusion_matrix():
     df = pd.read_csv('confusion_matrix_data.csv')
+
+    lbls = [val for val in labels.LABELS.values()][:-1]
     fig = px.imshow(df,
-                    x=[val for val in labels.LABELS.values()],
-                    y=[val for val in labels.LABELS.values()],
+                    x= lbls,
+                    y= lbls,
                     # color_continuous_scale='Viridis',  # Choose your desired color scale
                     labels=dict(x='Predicted Labels', y='True Labels', color='Confusion')
                     )
