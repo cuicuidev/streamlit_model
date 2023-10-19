@@ -88,38 +88,34 @@ def load_model():
 
     model = Sequential()
 
-    model.add(Input(shape=(HEIGHT, WIDTH, 1)))
+    model.add(Input(shape=(HEIGHT, WIDTH, 1), name='input_layer'))
 
     # First Conv Block
-    model.add(Conv2D(filters=32, kernel_size=3, padding='same', kernel_initializer='he_normal'))
-    # model.add(BatchNormalization())
-    model.add(tf.keras.layers.ReLU())
-    model.add(MaxPooling2D(pool_size=2))
+    model.add(Conv2D(filters=32, kernel_size=3, padding='same', kernel_initializer='he_normal', name='conv2d_1'))
+    model.add(tf.keras.layers.ReLU(name='relu_1'))
+    model.add(MaxPooling2D(pool_size=2, name='maxpool_1'))
 
     # Second Conv Block
-    model.add(Conv2D(filters=64, kernel_size=3, padding='same', kernel_initializer='he_normal'))
-    # model.add(BatchNormalization())
-    model.add(tf.keras.layers.ReLU())
-    model.add(MaxPooling2D(pool_size=2))
+    model.add(Conv2D(filters=64, kernel_size=3, padding='same', kernel_initializer='he_normal', name='conv2d_2'))
+    model.add(tf.keras.layers.ReLU(name='relu_2'))
+    model.add(MaxPooling2D(pool_size=2, name='maxpool_2'))
 
     # Third Conv Block
-    model.add(Conv2D(filters=128, kernel_size=3, padding='same', kernel_initializer='he_normal'))
-    # model.add(BatchNormalization())
-    model.add(tf.keras.layers.ReLU())
-    model.add(MaxPooling2D(pool_size=2))
+    model.add(Conv2D(filters=128, kernel_size=3, padding='same', kernel_initializer='he_normal', name='conv2d_3'))
+    model.add(tf.keras.layers.ReLU(name='relu_3'))
+    model.add(MaxPooling2D(pool_size=2, name='maxpool_3'))
 
     # Fourth Conv Block
-    model.add(Conv2D(filters=256, kernel_size=3, padding='same', kernel_initializer='he_normal'))
-    # model.add(BatchNormalization())
-    model.add(tf.keras.layers.ReLU())
-    model.add(MaxPooling2D(pool_size=2))
+    model.add(Conv2D(filters=256, kernel_size=3, padding='same', kernel_initializer='he_normal', name='conv2d_4'))
+    model.add(tf.keras.layers.ReLU(name='relu_4'))
+    model.add(MaxPooling2D(pool_size=2, name='maxpool_4'))
 
     # Flatten and Fully Connected Layers
-    model.add(Flatten())
-    model.add(Dense(512, activation='relu', kernel_initializer='he_normal'))
-    model.add(Dropout(0.15))
-    model.add(Dense(256, activation='relu', kernel_initializer='he_normal'))
-    model.add(Dense(N_CATEGORIES, activation='softmax', kernel_initializer='he_normal'))
+    model.add(Flatten(name='flatten'))
+    model.add(Dense(512, activation='relu', kernel_initializer='he_normal', name='dense_1'))
+    model.add(Dropout(0.15, name='dropout'))
+    model.add(Dense(256, activation='relu', kernel_initializer='he_normal', name='dense_2'))
+    model.add(Dense(N_CATEGORIES, activation='softmax', kernel_initializer='he_normal', name='output_layer'))
 
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
                 initial_learning_rate=0.001,
@@ -134,6 +130,7 @@ def load_model():
     model.load_weights('model_weights.h5')
 
     return model
+
 
 def rescale_img(img):
     return img.resize((HEIGHT, WIDTH))
