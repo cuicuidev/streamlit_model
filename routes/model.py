@@ -27,7 +27,7 @@ def modelRoute():
         st.write(list(LABELS.values()))
 
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
-    
+
     model = load_model()
 
     if uploaded_image is not None:
@@ -47,18 +47,17 @@ def modelRoute():
             st.write(f'## Imagen {HEIGHT}x{WIDTH}px')
             st.image(rescaled_image, caption="Resized Image", use_column_width=True)
 
-            if st.button('Generar feature maps'):
-                st.write(f'### Primer bloque de convolución')
-                st.image(next(first), caption="Feature Map", use_column_width=True)
+            st.write(f'### Primer bloque de convolución')
+            st.image(next(first), caption="Feature Map", use_column_width=True)
 
-                st.write(f'### Segundo bloque de convolución')
-                st.image(next(second), caption="Feature Map", use_column_width=True)
+            st.write(f'### Segundo bloque de convolución')
+            st.image(next(second), caption="Feature Map", use_column_width=True)
 
-                st.write(f'### Tercer bloque de convolución')
-                st.image(next(third), caption="Feature Map", use_column_width=True)
+            st.write(f'### Tercer bloque de convolución')
+            st.image(next(third), caption="Feature Map", use_column_width=True)
 
-                st.write(f'### Cuarto bloque de convolución')
-                st.image(next(fourth), caption="Feature Map", use_column_width=True)
+            st.write(f'### Cuarto bloque de convolución')
+            st.image(next(fourth), caption="Feature Map", use_column_width=True)
 
         # Convert the grayscale image to a NumPy array
         image_array = tf.keras.preprocessing.image.img_to_array(rescaled_image)
