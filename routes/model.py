@@ -75,11 +75,6 @@ def modelRoute():
         # Display the prediction
         st.write(f"### El fabricante es _{LABELS[prediction.argmax()]}_.")
 
-    else:
-        # QUEREMOS NUESTRA SUPER ESTRELLITA!!!!!
-        st.image('assets/miles_morales.png', use_column_width = True)
-        st.write(f"### El fabricante es _{LABELS[40]}_.")
-
 def load_model():
     
     # try:
