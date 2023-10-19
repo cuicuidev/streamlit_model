@@ -25,10 +25,10 @@ def modelRoute():
     
     with st.expander('Ver fabricantes'):
         st.write(list(LABELS.values()))
-    
-    model = load_model()
 
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
+    
+    model = load_model()
 
     if uploaded_image is not None:
         # Read the uploaded image using PIL
